@@ -2,16 +2,18 @@
 class util
 {
 	/*
+		0.0.0.4 - adding ability to display individuals works EXAMPLE: index.php?workid=3
+		0.0.0.3.9 - changing email backup to a user button with configurable email address field
 		0.0.0.3 - a deployment test for 'games.brentknowles.com'
 		0.0.0.2 - the "translation" version of the editor was displaying translated versions of the strings. Needed to suppress.
 		0.0.0.1 - adoption of the version number system
 	*/
-	private static $VERSION= '0.0.0.3.4';
+	private static $VERSION= '0.0.0.4.0';
 
 	//
 	// CONTROL PANEL
 	//
-	private static $ip_test = '*.*.*.*';
+	private static $ip_test = '68.150.139.92';
 	
 	//
 	// INTERNAL VARIABLES
@@ -52,6 +54,12 @@ class util
 		public static $FACEBOOK_CODE="facebook_code";
 		public static $GPLUS_CODE="gplus_code";
 		public static $TWITTER_NAME="twitter_name";
+		public static $FOOTER_ABOVE="footer_above";
+		public static $FOOTER_BELOW="footer_below";
+		public static $DEFAULT_CATEGORY="default_category";
+		public static $SCHEMEORG_SCHEMA="schemeorg_schema";
+		public static $BACKUP_EMAIL_ADDRESS="backup_email_address";
+		
 		//
 		// KEY INDEXES INTO "WORKS"
 		//
@@ -60,6 +68,8 @@ class util
 		public static $KEY_PROGRESS="progress";
 		public static $KEY_STAGE="stage";
 		public static $LINK_FOR_PROGRESS="link_for_progress";
+		public static $WORKID = "workid";
+		
 		
 		//
 		// KEY INDEX FOR TRANSLATION index.php
@@ -82,7 +92,7 @@ class util
 		public static $LIMITED_TIME="limited_time";
 		public static $NOW_AVAILABLE="now_available";
 		public static $BLOG_LINK_LABEL="blog_link_label";
-		
+		public static $PREORDER_ON_NOW="preorder_on_now";
 		
 		//
 		// KEY INDEX FOR EDITOR TRANSLATION

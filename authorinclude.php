@@ -13,7 +13,7 @@ class util
 	//
 	// CONTROL PANEL
 	//
-	private static $ip_test = '68.150.139.92';
+	private static $ip_test = '*';
 	
 	//
 	// INTERNAL VARIABLES

@@ -1,0 +1,104 @@
+{"schema_version":{"version":"0.0.0.3"},
+"schema_words":{
+	"col1":{
+			"pagetitle":{"type":"string","help":"main heading on website"},
+			"subtitle":{"type":"string","help":"secondary heading"},
+			"subtitle2":{"type":"string"},
+			"scifi":{"type":"string"},
+			"fantasy":{"type":"string"},
+			"horror":{"type":"string"},
+			"nonfiction":{"type":"string"},
+			"nonfiction2":{"type":"string"},
+			"allfiction":{"type":"string"},
+			"story":{"type":"string"},
+			"novel":{"type":"string"},
+			"collection":{"type":"string"},
+			"hidden_title":{"type":"string"},
+			"page_description":{"type":"textarea"},
+			"progress_title":{"type":"string"},
+			"special_offer_title":{"type":"string"},
+			"offer":{"type":"textarea"},
+			"collection_note":{"type":"string"},
+			"preorder_soon":{"type":"string"},
+			"limited_time":{"type":"string"},
+			"now_available":{"type":"string"},
+			"blog_link_label":{"type":"string"},
+			"preorder_on_now":{"type":"string"}
+	},
+	"col2":{
+		"editor":{"type":"label", "help":"strings that appear only in the various editors"},
+		"enum_preorder": {"type":"string", "help":"instead of seeing enum_preorder in editor.php you can define a friendlier string"}
+		},
+	"show_add_link_button":"0"
+},
+"columns_words":["col1","col2"],
+"schema_settings1":{
+	"col1":{
+			"author":{"type":"string","help":"identifies this page to search engines. Not shown in default templates."},
+			"publisher":{"type":"string","help":"identifies this page to search engines. Not shown in default templates."},
+			"index_style_sheet":{"type":"string","help":"name of the style sheet to use with main site. changing the style sheet is the fastest way to adjust the site's appearance."},
+			"image_width":{"type":"integer", "help":"how wide is the cover photo for each element"},
+			"image_height":{"type":"integer","help":"how tall is the cover photo for each element"},
+			"blog_link":{"type":"string","help":"on the main page this link appears before the navigation categories"},
+			"show_any_option":{"type":"string","help":"if set to non-blank, will display a label that will show all works. The label will be titled whatever is wrote here"},
+			"facebook_code":{"type":"string","help":"Enter full HTML to display an appropriate Facebook link"},
+			"gplus_code":{"type":"string","help":"Enter full HTML to display an appropriate Google Plus Link"},
+			"twitter_name":{"type":"string","help":"Enter your twitter handle"},
+			"footer_above":{"type":"textarea","help":"Appears right above the 'social sharing' section"},
+			"footer_below":{"type":"textarea","help":"Appears below the 'social sharing' section"},
+			"default_category":{"type":"string","help":"Defaults to showing novels & collections. Change this to any category or 'all', if you want all items to appear by default"},
+			"schemeorg_schema":{"type":"string","help":"Specify an appropriate schema to mark up each product, like: http://schema.org/Book"},
+			"backup_email_address":{"type":"string","help":"Specify the email address to send backup files to. Backups can be invoked from dashboard"},
+			"show_reviews":{"type":"enum_truefalse","help":"If true a review box will appear at the bottom of the index.php page"}
+			},
+	"col2":{
+			"enum_preorder":{"type":"string","help":"comma separated list, each item represents a possible preorder state"},
+			"enum_truefalse":{"type":"string","help":"comma separated list, true/false"},
+			"enum_category":{"type":"string","help":"comma separated list, the possible genres a created work fits into"},
+			"enum_type":{"type":"string","help":"comma separated list, broad classification of a work, i.e., nonfiction versus novel"},
+			"enum_stage":{"type":"string","help":"work stages, like draft to editing"}
+			},
+	"col3":{
+			"enum_linktype":{"type":"string","help":"comma separated list, each item represents a valid link category (i.e., amazon link)"},
+			"amazon_link":{"type":"string","help":"define an appropriate image for each type of link"},
+			"print_link":{"type":"string","help":"define an appropriate image for each type of link"},
+			"web_link":{"type":"string","help":"define an appropriate image for each type of link"},
+			"kobo_link":{"type":"string","help":"define an appropriate image for each type of link"},
+			"direct_link":{"type":"string","help":"define an appropriate image for each type of link"},
+			"mobi_link":{"type":"string","help":"define an appropriate image for each type of link"},
+			"epub_link":{"type":"string","help":"define an appropriate image for each type of link"},
+			"nook_link":{"type":"string","help":"define an appropriate image for each type of link"},
+			"apple_link":{"type":"string","help":"define an appropriate image for each type of link"},
+			"smashwords_link":{"type":"string","help":"define an appropriate image for each type of link"},
+			"pdf_link":{"type":"string","help":"define an appropriate image for each type of link"}
+			},
+	"show_add_link_button":"0"
+	
+	
+},
+"columns_settings1":["col1","col2","col3"],
+"columns_works":["col1","col2","col3"],
+"schema_works":{
+	"col1":{"title":{"type":"string","help":"the name of your work"},"blurb":{"type":"textarea","help":"a brief description"},"category":{"type":"enum_category","help":"what genre does this work fall under?"},"type":{"type":"enum_type","help":"nonfiction or fiction?"},
+	"showwork":{"type":"enum_truefalse","help":"the work does not appear until this is set to true"},
+	"showprogress":{"type":"enum_truefalse", "help":"if true -- and there is room -- current progress will display in the progress box"},
+	"progress":{"type":"range","help":"how complete is this work, in regards to the <b>CURRENT</b> stage"},
+	"stage":{"type":"enum_stage","help":"what stage of development is this project?"},
+	"link_for_progress":{"type":"string","help":"Provide the ID for another control on this page to grab the link, if Stage=DONE (i.e., group1_0_link"},
+	"limitedtime":{"type":"enum_truefalse","help":"If true will show a Limited Time banner"}
+	},
+	"col2":{"image":{"type":"string","help":"images are assumed stored in a image subdirectory"},"image_alt":{"type":"string","help":"specify text to show if image does not load"},"preorder_state":{"type":"enum_preorder","help":"Set preorder status for the work, if relevant"},
+	"priority":{"type":"integer","help":"higher numbers appear lower in the lists"},
+	"excerpt":{"type":"textarea","help":"users can read a brief portion of the work"},
+	"comment":{"type":"textarea","help":"this note is only visible to the developer for details regarding this work"},
+	"isbn":{"type":"string", "help":"enter the appropriate ISBN for this work"},
+	"workid":{"type":"integer", "help":"this number can be used to show a single page view of the work (i.e., id=3)"}
+	},
+"col3":{"link":{"isgroup":"group1","type":"string","help":"the link to the work"},
+		"linktype":{"isgroup":"group1","type":"enum_linktype","help":"link type influences graphic shown"},
+		 "linkisbn":{"isgroup":"group1","type":"string", "help":"TBD"},
+		"group1end":{"isgroup":"groupend"}
+		},
+	"show_add_link_button":"col3"
+}
+}

@@ -4,8 +4,10 @@
 
 */
 class Review{
-	// User Id associated with work (this connects the review to a specific work
-	public $user_id=-1;
+	// Work Id associated with work (this connects the review to a specific work
+	public $work_id=-1;
+	// the caption heading
+	public $review_caption="";
 	// the snippet of review text to show
 	public $review_text="";
 	// web address to the actual article or location of the review
@@ -13,10 +15,21 @@ class Review{
 	// reviewers name
 	public $reviewer="";
 	
-	function __construct($reviewtest) {
- 	   $this->review_text=$reviewtest;
+	function __construct($reviewcaption, $reviewtest, $workid, $reviewsite, $_reviewer) {
+	   $this->review_caption=$reviewcaption;
+	   $this->review_text=$reviewtest;
+	   $this->work_id = $workid;
+	   $this->review_site= $reviewsite;
+	   $this->reviewer = $_reviewer;
    }
-
+	////////////////////////////////////////
+	// Just randomizes the review list so the
+	// same review is not always shown.
+	////////////////////////////////////////
+    public function AdjustListOfReviews(&$reviews)
+	{
+		shuffle($reviews);
+	}
 	////////////////////////////////////////
 	//
 	////////////////////////////////////////
@@ -125,7 +138,7 @@ class Review{
 			$count1++;
 			$checked="";
 			
-			echo sprintf('<article><h2>BOO</h3><h4> %s</h4></article>',$review->review_text);
+			echo sprintf('<article><h2>%s</h3><h4> %s</h4><a href="%s">%s</a></article>',$review->review_caption,$review->review_text, $review->review_site, $review->reviewer);
 			echo "\n";
 		}
 	}

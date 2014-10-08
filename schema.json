@@ -1,10 +1,16 @@
-{"schema_version":{"version":"0.0.0.4"},
-"columns_reviews":["rcol1"],
+{"schema_version":{"version":"0.0.0.6"},
+"columns_reviews":["col1"],
 "schema_reviews":{
-	"rcol1":{
-		"reviewtitle":{"type":"string","help":"Enter a caption for this review."}
+	"col1":{
+		"reviewtitle":{"type":"string","help":"Enter a caption for this review."},
+		"reviewblurb":{"type":"textarea","help":"Snippet of review."},
+		"reviewsite":{"type":"string","help":"Name of review site and link to it."},
+		"reviewer":{"type":"string","help":"Name of reviewer."},
+		"workid":{"type":"integer","help":"ID number of the work reviewed."},
+		"workname":{"type":"string","help":"Name of work."},
+		"worklink":{"type":"string","help":"Preferred link to work."}
 	}
-}
+},
 "schema_words":{
 	"col1":{
 			"pagetitle":{"type":"string","help":"main heading on website"},

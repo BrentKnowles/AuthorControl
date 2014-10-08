@@ -1,4 +1,10 @@
-{"schema_version":{"version":"0.0.0.3"},
+{"schema_version":{"version":"0.0.0.4"},
+"columns_reviews":["rcol1"],
+"schema_reviews":{
+	"rcol1":{
+		"reviewtitle":{"type":"string","help":"Enter a caption for this review."}
+	}
+}
 "schema_words":{
 	"col1":{
 			"pagetitle":{"type":"string","help":"main heading on website"},

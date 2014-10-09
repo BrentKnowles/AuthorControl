@@ -67,8 +67,8 @@ class Review{
 			echo sprintf('#slide%s:checked ~ #controls label:nth-child(%s)', $count1, $value_to_write);
 			
 		}
-		echo "{\n background: url('arrowright.png') no-repeat;";
-		echo "width:48px; height:48px;";
+		echo "{\n background: url('arrowright2.png') no-repeat;";
+		echo "width:24px; height:24px;";
 		echo "float: right;";
 		echo "margin: 0 10px 0 0;";
 		echo "display: block;\n}";
@@ -86,8 +86,8 @@ class Review{
 			echo sprintf('#slide%s:checked ~ #controls label:nth-child(%s)', $count1, $value_to_write);
 			
 		}
-		echo "{\nbackground: url('arrowleft.png') no-repeat;";
-		echo "width:48px; height:48px;";
+		echo "{\nbackground: url('arrowleft2.png') no-repeat;";
+		echo "width:24px; height:24px;";
 		echo "float: left;";
 		echo "margin: 0 0 0 10px;";
 		echo "display: block;\n}";

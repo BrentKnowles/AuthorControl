@@ -67,7 +67,8 @@ class Review{
 			echo sprintf('#slide%s:checked ~ #controls label:nth-child(%s)', $count1, $value_to_write);
 			
 		}
-		echo "{\nbackground: #ffffff url('arrowright.png') no-repeat;";
+		echo "{\n background: url('arrowright.png') no-repeat;";
+		echo "width:48px; height:48px;";
 		echo "float: right;";
 		echo "margin: 0 10px 0 0;";
 		echo "display: block;\n}";
@@ -85,7 +86,8 @@ class Review{
 			echo sprintf('#slide%s:checked ~ #controls label:nth-child(%s)', $count1, $value_to_write);
 			
 		}
-		echo "{\nbackground: #ffffff url('http://www.phlume.com/chad/testtest/prev.png') no-repeat;";
+		echo "{\nbackground: url('arrowleft.png') no-repeat;";
+		echo "width:48px; height:48px;";
 		echo "float: left;";
 		echo "margin: 0 0 0 10px;";
 		echo "display: block;\n}";
@@ -149,7 +151,7 @@ class Review{
 			$count1++;
 			$checked="";
 			
-			echo sprintf('<article><h2>%s</h2><h4> %s</h4><a href="%s">%s</a> | <a href="%s">%s</a></article>',$review->review_caption,$review->review_text,$review->worklink,$review->workname, $review->review_site,  $review->reviewer);
+			echo sprintf('<article><h2 style=" font-variant: small-caps;">%s</h2><h4> %s</h4><a style="font-variant: small-caps;" href="%s">%s</a> | <a href="%s">%s</a></article>',$review->review_caption,$review->review_text,$review->worklink,$review->workname, $review->review_site,  $review->reviewer);
 			echo "\n";
 		}
 	}
@@ -232,8 +234,9 @@ class Review{
 	}
 	////////////////////////////////////////
 	// Load review file and reviews into array
+	// $restrict_to_id of 0 or less will SHOW ALL.
 	////////////////////////////////////////
-	public static function LoadReviewsFromFile()
+	public static function LoadReviewsFromFile($restrict_to_id)
 	{
 		 $reviews = array();
 	// load file
@@ -244,21 +247,40 @@ class Review{
 		
 			foreach ( $ListOfWorks as $key_minor => $value_minor)
 			{
-			
+				$allowedtoshow=1;
+				
 			
 				$title=$result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$REVIEWTITLE];
-				if ($title && $title !== "")
-				{
-					
-					$blurb= $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$REVIEWBLURB];
+				$show=$result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$SHOWREVIEW];
+
+					// we can prevent a review from being added to the array in the case
+					// of our being on a specific page and the workid does not match
 					$workid=$result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$REVIEW_WORKID];
-					$reviewsite = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$REVIEWSITE];
-					$reviewname = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$REVIEWER];
-					$workname = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$WORKNAME];
-					$worklink = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$WORKLINK];
-					$review =  new Review($title,$blurb, $workid, $reviewsite, $reviewname, $workname, $worklink);
-					
-					array_push($reviews, $review);
+					if ($restrict_to_id > 0)
+					{
+						$allowedtoshow=0;
+						if ($restrict_to_id === $workid)
+						{
+							$allowedtoshow = 1;
+						}
+					}
+				
+				if ($allowedtoshow === 1)
+				{
+					if ($show === util::$TRUE)
+					if ($title && $title !== "")
+					{
+						
+						$blurb= $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$REVIEWBLURB];
+						
+						$reviewsite = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$REVIEWSITE];
+						$reviewname = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$REVIEWER];
+						$workname = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$WORKNAME];
+						$worklink = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$WORKLINK];
+						$review =  new Review($title,$blurb, $workid, $reviewsite, $reviewname, $workname, $worklink);
+						
+						array_push($reviews, $review);
+					}
 				}
 			}
 		 

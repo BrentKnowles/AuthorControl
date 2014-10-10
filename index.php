@@ -1,10 +1,23 @@
 <html>
   <head>
+<!-- Custom styles for this template -->
+    
+	
 <link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>  
 <link rel="stylesheet" href="./css/inlinepopup.css"> 
 <link rel="stylesheet" href="./css/font-awesome.css">
+<link href="carousel.css" rel="stylesheet">
 <?php
 require 'authorinclude.php';
+
+if (file_exists('./css/bootstrap-theme.css'))
+{
+}
+else
+{
+	echo "<span class='error'>Bootstrap is required for the dashboard to look nice. Expecting to find bootstrap-theme.css and related files in /css/ subdirectory. Page may not appear correctly.</span><br/><br/><br/>";
+}
+
 
 if (file_exists('./images/'))
 {
@@ -95,6 +108,7 @@ $FOOTER_ABOVE="";
 $FOOTER_BELOW="";
 $DEFAULT_CATEGORY="";
 $SCHEMEORG_SCHEMA="";
+$SHOW_REVIEWS=util::$FALSE;
 	//
 	// All setting information is stored in a record = -1
 	// The first record in the list
@@ -121,6 +135,7 @@ $SCHEMEORG_SCHEMA="";
 			$FOOTER_BELOW=$key[util::$FOOTER_BELOW];
 			$DEFAULT_CATEGORY=$key[util::$DEFAULT_CATEGORY];
 			$SCHEMEORG_SCHEMA=$key[util::$SCHEMEORG_SCHEMA];
+			$SHOW_REVIEWS=$key[util::$SHOW_REVIEWS];
 			
 		break;
 		}
@@ -219,7 +234,7 @@ Categories - Special
   </head>
 
   <body  > 
-  
+ 
   
   <section class="centerelement innerbackground">
     <article class="topbox">
@@ -480,7 +495,15 @@ foreach ($novels as $val)
 		echo '<div itemscope itemtype="'.$SCHEMEORG_SCHEMA.'">';
 		echo '<div itemprop="name">';
 		///////////////////////////////////////////////////////////
-		echo "<H2 class='booktitle'>".$val->title."</H2>";
+		
+		$titleToUse = $val->title;
+		if ($val->workid > 0)
+		{
+			// we have a workID which means it makes sense to have a "clickable" page all about us
+			$titleToUse = sprintf("<a href='index.php?workid=%s'>%s</a>",$val->workid, $val->title);
+		}
+		
+		echo "<H2 class='booktitle'>".$titleToUse."</H2>";
 		echo '</div>';
 		
 		if ($val->image != "")
@@ -719,6 +742,32 @@ foreach ($novels as $val)
 <div class="sharebuttons">
 
 <?php
+$showreviews="hidden";
+
+//
+// On FireFox we never show reviews (we can't make them appear properly)
+//
+if(isset($_SERVER['HTTP_USER_AGENT'])){
+    $agent = $_SERVER['HTTP_USER_AGENT'];
+}
+if(strlen(strstr($agent,"Firefox")) > 0 ){      
+    // won't enable reviews
+}
+else
+if ($SHOW_REVIEWS === util::$TRUE)
+{
+
+    $reviews = Review::LoadReviewsFromFile($workid);
+	Review::AdjustListOfReviews($reviews);
+	Review::BuildStylesheet($reviews);
+	
+	$showreviews="visible";
+}
+?>
+
+
+
+<?php
 
 
 
@@ -737,8 +786,43 @@ echo '<a href="https://twitter.com/'.$TWITTER_NAME.'" class="twitter-follow-butt
 ?>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
-
 </article>
+
+		<article id=slider style="color:white; visibility: <?php echo $showreviews;?>;">		
+		
+	
+		<!-- Slider Setup -->
+		<?php
+			Review::BuildInputControls($reviews);
+		?>
+		
+	
+	
+		<!-- The Slider -->
+		
+		<div id=slides>		
+			<div id=overflow>			
+				<div class=inner>	
+				<?php
+					Review::BuildArticles($reviews);
+				?>				
+					
+				</div> <!-- .inner -->
+			</div> <!-- #overflow -->
+		</div> <!-- #slides -->
+		<!-- Controls and Active Slide Display -->
+	<?php
+			Review::BuildControlLabels($reviews);
+			Review::BuildActiveLabels($reviews);
+		?>
+		
+
+			
+		
+	</article>
+
+<article style="margin:0px 10px;">
+<br/>
 <?php
 
 if ($FOOTER_BELOW != "")
@@ -757,5 +841,9 @@ if ($FOOTER_BELOW != "")
 <br/><br/>
 <?php util::DrawFooterOnHTMLPage();?>
 </div>
+</article>
+
+
+
   </body>
 </html>

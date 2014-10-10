@@ -40,6 +40,12 @@ class Review{
     public static function AdjustListOfReviews(&$reviews)
 	{
 		shuffle($reviews);
+		
+		// now we CHOP the array to only show a max of 5 reviews
+		if (count($reviews) > 6)
+		{
+			$reviews = array_slice($reviews, 0, 5);
+		}
 	}
 	////////////////////////////////////////
 	//
@@ -123,6 +129,18 @@ class Review{
 	-moz-transition: all 1s ease-out 0.6s;
 	-o-transition: all 1s ease-out 0.6s;
 	transition: all 1s ease-out 0.6s;}";
+	
+	// 09/10/2014 was going to dynamically adjust but several other values
+	// also need to cahnge in the style sheet for this to work 
+	// and I don't think the percentages see #slides article in carousel would ever "be perfect",
+	// though modifying that does appear to be the right way to go.
+	// In many ways having a limit on the # of reviews to show does make sense anyways.
+	//$number = count($reviews);
+	$number_width = 500;//(int)( ($number-1) * 100);
+	echo sprintf("\n#slides .inner {width: %s%%;\n	line-height: 15px;}\n", $number_width);
+
+
+	
 		echo "</style>";
 	}
 	////////////////////////////////////////
@@ -202,7 +220,7 @@ class Review{
 	////////////////////////////////////////
 	public static function DrawListOfReviewsForEditing()
 	{
-	echo "<h1>Reviews</h1>";
+	
 	 $result = json_decode(file_get_contents(Review::$REVIEW_FILE), true);
 	 
 	 $ListOfWorks = $result[util::$KEY_FOR_WORKSCREATED];
@@ -214,13 +232,16 @@ class Review{
 	 // echo "here";
 		  $warning="";
 		  $title = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$REVIEWTITLE];
-		  $workname = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$WORKNAME];
-		//echo "(".util::$REVIEWTITLE.") title = [".$title."] for key = ".$key_minor;
-		  
-		  // I put the ID = Title in here so that it would sort alphabetically.
-			$results_array[$title] =  sprintf("<h3> <span class='nicelink label label-default'><a id='%s' href='editor.php?record=%s&columns_to_use=%s&schema_to_use=%s&override_json=%s'>%s</a></span>%s|%s</h3>",$title,$key_minor,
-			Review::$REVIEW_COLUMNS,Review::$REVIEW_SCHEMA,Review::$REVIEW_FILE,
-			$workname,$title,$warning);
+		  if ($title)
+		  {
+			  $workname = $result[util::$KEY_FOR_WORKSCREATED][$key_minor][util::$WORKNAME];
+			//echo "(".util::$REVIEWTITLE.") title = [".$title."] for key = ".$key_minor;
+			  
+			  // I put the ID = Title in here so that it would sort alphabetically.
+				$results_array[$title] =  sprintf("<h3> <span class='nicelink label label-default'><a id='%s' href='editor.php?record=%s&columns_to_use=%s&schema_to_use=%s&override_json=%s'>%s</a></span>%s%s</h3>",$workname,$key_minor,
+				Review::$REVIEW_COLUMNS,Review::$REVIEW_SCHEMA,Review::$REVIEW_FILE,
+				$workname,$title,$warning);
+			}
 	  }
 	  	  
 	  sort($results_array, SORT_STRING);

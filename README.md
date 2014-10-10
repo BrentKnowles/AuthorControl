@@ -7,4 +7,5 @@ Uses JSON files to store information and a schema system to translate that infor
 
 - options.json      : Stores information about the works
 - lang_english.json : Stores text information (eventually language support)
+- review.json       : Stores information regarding reviews
 - schema.json       : Stores the fields and behavior rules regarding how to display those fields

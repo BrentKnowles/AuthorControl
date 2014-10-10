@@ -30,13 +30,21 @@ else
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-	
+
 <style>
 .nicelink a:link{
 color:white;
 }
 .nicelink a:visited{
 color:white;
+}
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
 }
 </style>
 	</head>
@@ -65,15 +73,35 @@ color:white;
             <ul class="nav navbar-nav">
               <li ><a href="editor.php?record=<?php echo util::$INDEX_SETTINGS_RECORD;?>&columns_to_use=columns_settings1&schema_to_use=schema_settings1">Look and Feel</a></li>
               <li><a href="editor.php?record=<?php echo util::$INDEX_SETTINGS_RECORD;?>&columns_to_use=columns_words&schema_to_use=schema_words&override_json=lang_english.json">Text</a></li>
-              <li><a href="add_new_work.php">Add New Work</a></li>
-			  <li><a href="index.php">Site</a></li>
-			  <li><a href="backup.php">Backup Data</a></li>
+		
+              
+			  <li><a href="index.php">Visit Site</a></li>
+			 
+			  <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="add_new_work.php">Add New Work</a></li>
+				<li><a href="add_new_review.php">Add New Review</a></li>
+              </ul>
+            </li>
+			 <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Advanced <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+               	   <li ><a href="editor.php?record=<?php echo util::$INDEX_SETTINGS_RECORD;?>&columns_to_use=columns_settings1&schema_to_use=schema_settings1&override_json=reviews.json">Review Look and Feel</a></li>
+				    <li><a href="backup.php">Backup Data</a></li>
+              </ul>
+            </li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
 	  
-	  
+	   <div class="row">
+        <div class="col-md-4">
+       <div class="page-header">
+        <h1>Works</h1>
+       </div>
+
 	  <?php
 	  
 	  $result = json_decode(file_get_contents("options.json"), true);
@@ -102,17 +130,20 @@ color:white;
 	  {
 		  $warning="";
 		  $title = $result[$works_label][$key_minor][$works_title];
-		 // echo "->".$result[$works_label][$key_minor][$showwork]."<-";
-		  if ( $result[$works_label][$key_minor][$showwork] === "true")
+		  if ($title)
 		  {
+			 // echo "->".$result[$works_label][$key_minor][$showwork]."<-";
+			  if ( $result[$works_label][$key_minor][$showwork] === "true")
+			  {
+			  }
+			  else
+			  {
+				$warning="<span class='nicelink label label-warning'>Hidden</span>";
+			  } 
+			  
+			  // I put the ID = Title in here so that it would sort alphabetically.
+				$results_array[$title] =  "<h3> <span class='nicelink label label-default'><a id='".$title."' href='editor.php?record=".$key_minor."'>".$title."</a></span>".$warning."</h3>";
 		  }
-		  else
-		  {
-			$warning="<span class='nicelink label label-warning'>Hidden</span>";
-		  } 
-		  
-		  // I put the ID = Title in here so that it would sort alphabetically.
-			$results_array[$title] =  "<h3> <span class='nicelink label label-default'><a id='".$title."' href='editor.php?record=".$key_minor."'>".$title."</a></span>".$warning."</h3>";
 	  }
 	sort($results_array, SORT_STRING);
 		foreach ($results_array as $newkey=>$value)
@@ -120,9 +151,23 @@ color:white;
 			echo $value;
 		}
 	  
-
-		util::DrawFooterOnHTMLPage();
+	  echo "</div>";
+	  echo '<div class="col-md-4">';
+	  ?>
+      <div class="page-header">
+        <h1>Reviews</h1>
+       </div>
+	  <?php
+	  Review::DrawListOfReviewsForEditing();
+	  echo "</div>  </div>";
+	  util::DrawFooterOnHTMLPage();
   ?>
+   <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+  
 	  </body>
 	  </html>
 	 

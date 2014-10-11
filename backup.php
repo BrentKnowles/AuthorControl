@@ -18,96 +18,64 @@ if ($emailaddy==="")
 	die("Invalid email");
 }
 
-//define the receiver of the email 
-$to =$emailaddy; 
-//define the subject of the email 
+// array with filenames to be sent as attachment
+$files = array("options.json","reviews.json","schema.json","lang_english.json");
+ 
+// email fields: to, from, subject, and so on
+$to = $emailaddy;
+$from = $emailaddy;
 $subject = sprintf('AuthorControlBackup for site: %s',$_SERVER[HTTP_HOST]); 
-//create a boundary string. It must be unique 
-//so we use the MD5 algorithm to generate a random hash 
-$random_hash = md5(date('r', time())); 
-//define the headers we want passed. Note that they are separated with \r\n 
-$headers = sprintf("From: %s\r\nReply-To: %s", $emailaddy, $emailaddy); 
-//add boundary string and mime type specification 
-$headers .= "\r\nContent-Type: multipart/mixed; boundary=\"PHP-mixed-".$random_hash."\""; 
-//read the atachment file contents into a string,
-//encode it with MIME base64,
-//and split it into smaller chunks
-//$attachment = chunk_split(base64_encode(file_get_contents('options.json'))); 
-$attachment = file_get_contents($JSON_FILE); 
-$attachment2 = file_get_contents($JSON_FILE2); 
-//define the body of the message. 
-ob_start(); //Turn on output buffering 
-?> 
---PHP-mixed-<?php echo $random_hash; ?>  
-Content-Type: multipart/alternative; boundary="PHP-alt-<?php echo $random_hash; ?>" 
-
---PHP-alt-<?php echo $random_hash; ?>  
-Content-Type: text/plain; charset="iso-8859-1" 
-Content-Transfer-Encoding: 7bit
-
-AuthorControl Backup
-This is simple text email message. 
-
---PHP-alt-<?php echo $random_hash; ?>  
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 7bit
-
-<h2>AuthorControl Backup</h2> 
-<p>Please find 4 attached backup files.</p> 
-
---PHP-alt-<?php echo $random_hash; ?>-- 
-
---PHP-mixed-<?php echo $random_hash; ?>  
-Content-Type: text/plain; charset="iso-8859-1" ; name="options.txt"  
-Content-Transfer-Encoding: 7bit 
-Content-Disposition: attachment  
-
-<?php echo $attachment; ?>
- --PHP-mixed-<?php echo $random_hash; ?>-- 
+$message = sprintf("AuthorControl Backup: Please find %s attached backup files.",count($files));
+$headers = "From: $from";
  
- --PHP-alt-<?php echo $random_hash; ?>-- 
- --PHP-mixed-<?php echo $random_hash; ?>  
- Content-Type: text/plain; charset="iso-8859-1" ; name="reviews.txt"  
-Content-Transfer-Encoding: 7bit 
-Content-Disposition: attachment  
-
-<?php echo $attachment2; ?>
+// boundary 
+$semi_rand = md5(time()); 
+$mime_boundary = "==Multipart_Boundary_x{$semi_rand}x"; 
  
---PHP-mixed-<?php echo $random_hash; ?>-- 
+// headers for attachment 
+$headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\""; 
+ 
+// multipart boundary 
+$message = "This is a multi-part message in MIME format.\n\n" . "--{$mime_boundary}\n" . "Content-Type: text/plain; charset=\"iso-8859-1\"\n" . "Content-Transfer-Encoding: 7bit\n\n" . $message . "\n\n"; 
+$message .= "--{$mime_boundary}\n";
+ 
+// preparing attachments
 
-
-
-<?php 
-//copy current buffer contents into $message variable and delete current output buffer 
-$message = ob_get_clean(); 
-//send the email 
-$mail_sent = @mail( $to, $subject, $message, $headers ); 
-//if the message is sent successfully print "Mail sent". Otherwise print "Mail failed" 
-echo $mail_sent ? "Mail sent" : "Mail failed"; 
-
-	echo "Done";
-	echo "<br/>";
-	echo "<a href='editor_dashboard.php'>Back</a>";
-?>
-
-
-<?php
-/*$myip_security=util::GetIP();
-$JSON_FILE = "options.json";
-$JSON_FILE2 = Review::$REVIEW_FILE;
-
-if ($_SERVER['REMOTE_ADDR'] === $myip_security)
-{
-	$extra_message=file_get_contents($JSON_FILE);
-	$extra_message2=file_get_contents($JSON_FILE2);
+// preparing attachments
+for($x=0;$x<count($files);$x++){
+    $file = fopen($files[$x],"rb");
+    $data = fread($file,filesize($files[$x]));
+    fclose($file);
+    $data = chunk_split(base64_encode($data));
+    $message .= "Content-Type: {\"application/octet-stream\"};\n" . " name=\"$files[$x]\"\n" . 
+    "Content-Disposition: attachment;\n" . " filename=\"$files[$x]\"\n" . 
+    "Content-Transfer-Encoding: base64\n\n" . $data . "\n\n";
 	
-	$result = json_decode($extra_message, true);
+	
+	
+   // $message .= "--{$mime_boundary}\n";
+	
+ 	if ($x=== (count($files)-1) ){
+	$message .="–-{$mime_boundary}–-\n";
+	}
+	else{
+	$message .="--{$mime_boundary}\n";
+	} 
+}
+ //echo $message;
+// send
+ 
+$ok = @mail($to, $subject, $message, $headers); 
+if ($ok) { 
+    echo "<p>mail sent to $to!</p>"; 
+} else { 
+    echo "<p>mail could not be sent!</p>"; 
+} 
 
-	$emailaddy= $result[util::$KEY_FOR_WORKSCREATED][util::$INDEX_SETTINGS_RECORD][util::$BACKUP_EMAIL_ADDRESS];
-	 mail( $emailaddy, 'Fiction Site Backup', "".$extra_message." ||| ".$extra_message2);
-	echo "Done";
+
+
+	
 	echo "<br/>";
 	echo "<a href='editor_dashboard.php'>Back</a>";
-}
-*/
 ?>
+

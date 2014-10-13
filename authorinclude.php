@@ -1,19 +1,28 @@
 <?php
+require_once "review.php";
+require_once "novel.php";
+
 class util
 {
 	/*
+	0.0.0.6.0 - Allow "behavior" control of State/Status fields (i.e., deciding which states behave as a 'done' state)
+	0.0.0.5.8 - Able to edit the schema to add fields (providing admin flexibility)
+	0.0.0.5.7 - adding status information to dashboard
+	0.0.0.5.6 - giving novel its own class file (refactoring)
+	0.0.0.5.2 - adding review editing (reviews.json)
+		0.0.0.5.0 - adding Review System
 		0.0.0.4 - adding ability to display individuals works EXAMPLE: index.php?workid=3
 		0.0.0.3.9 - changing email backup to a user button with configurable email address field
 		0.0.0.3 - a deployment test for 'games.brentknowles.com'
 		0.0.0.2 - the "translation" version of the editor was displaying translated versions of the strings. Needed to suppress.
 		0.0.0.1 - adoption of the version number system
 	*/
-	private static $VERSION= '0.0.0.4.0';
+	private static $VERSION= '0.0.0.6.1';
 
 	//
 	// CONTROL PANEL
 	//
-	private static $ip_test = '*';
+	private static $ip_test = '*'; 
 	
 	//
 	// INTERNAL VARIABLES
@@ -25,19 +34,27 @@ class util
 	// PUBLIC GETS
 	//
 	
-		//
-		// SPECIAL INDEXES INTO WORK CREATED
-		//
-		public static $INDEX_SETTINGS_RECORD=-1;
-	
+		
 	
 	
 		//
 		// SPECIAL VALUES
 		//
 		public static $TRUE="true";
-		public static $DONE="done";
+		public static $FALSE="false";
+		//public static $DONE="done"; made this user configurable with 0.0.0.6.0
 		public static $SKIP_ENTRY="^skip^";
+		public static $STRING="_string";// used when we need a custom affix to define a "string lookup" into the language file
+		//
+		// BEHAVIOR VALUES
+		//
+		public static $BEHAVIOR_DONE="done";
+	
+		//
+		// SCHEMA FIELDS
+		//
+		public static $TYPE="type";
+		public static $HELP="help";
 	
 		//
 		// KEY INDEXES INTO JSON FILES -- OPTIONS
@@ -59,16 +76,23 @@ class util
 		public static $DEFAULT_CATEGORY="default_category";
 		public static $SCHEMEORG_SCHEMA="schemeorg_schema";
 		public static $BACKUP_EMAIL_ADDRESS="backup_email_address";
+		public static $SHOW_REVIEWS = "show_reviews";
+		public static $TYPESOFFIELDS = "typesoffields";
+			//
+			// SPECIAL INDEXES INTO WORK CREATED
+			//
+			public static $INDEX_SETTINGS_RECORD=-1;
 		
-		//
-		// KEY INDEXES INTO "WORKS"
-		//
-		public static $KEY_TITLE ="title";
-		public static $KEY_SHOW_PROGRESS="showprogress";
-		public static $KEY_PROGRESS="progress";
-		public static $KEY_STAGE="stage";
-		public static $LINK_FOR_PROGRESS="link_for_progress";
-		public static $WORKID = "workid";
+			//
+			// KEY INDEXES INTO "Options.json.WORKS"
+			//
+			public static $KEY_TITLE ="title";
+			public static $KEY_SHOW_PROGRESS="showprogress";
+			public static $KEY_PROGRESS="progress";
+			public static $KEY_STAGE="stage";
+			public static $LINK_FOR_PROGRESS="link_for_progress";
+			public static $WORKID = "workid";
+			public static $KEY_COMMENT="comment";
 		
 		
 		//
@@ -98,6 +122,18 @@ class util
 		// KEY INDEX FOR EDITOR TRANSLATION
 		//
 	
+	
+		//
+		// KEY INDEX FOR REVIEW SYSTEM
+		//
+		public static $REVIEWTITLE="reviewtitle";
+		public static $REVIEWBLURB="reviewblurb";
+		public static $REVIEWSITE = "reviewsite";
+		public static $REVIEWER = "reviewer";
+		public static $REVIEW_WORKID="workid";
+		public static $WORKNAME= "workname";
+		public static $WORKLINK="worklink";
+		public static $SHOWREVIEW="showreview";
 	//
 	// All methods should invoke this in case there's some setup needed
 	//

@@ -88,6 +88,7 @@ body {
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Advanced <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                	   <li ><a href="editor.php?record=<?php echo util::$INDEX_SETTINGS_RECORD;?>&columns_to_use=columns_settings1&schema_to_use=schema_settings1&override_json=reviews.json">Review Look and Feel</a></li>
+				    <li ><a href="editor.php?record=<?php echo util::$INDEX_SETTINGS_RECORD;?>&columns_to_use=columns_words&schema_to_use=schema_word&override_json=lang_english.json">Text Look and Feel</a></li>
 				    <li><a href="backup.php">Backup Data</a></li>
               </ul>
             </li>
@@ -140,9 +141,12 @@ body {
 			  {
 				$warning="<span class='nicelink label label-warning'>Hidden</span>";
 			  } 
-			  
+			  $stage_label=$result[$works_label][$key_minor][util::$KEY_STAGE];
+			  $stage_appearance_html_class=  $result[util::$KEY_FOR_WORKSCREATED][util::$INDEX_SETTINGS_RECORD][$stage_label];//'label label-primary';
+			  $stage=sprintf("<span class='%s'>%s</span>",$stage_appearance_html_class, $stage_label );
+			  $comment=sprintf('<span class="label label-info">%s</span>',$result[$works_label][$key_minor][util::$KEY_COMMENT] );
 			  // I put the ID = Title in here so that it would sort alphabetically.
-				$results_array[$title] =  "<h3> <span class='nicelink label label-default'><a id='".$title."' href='editor.php?record=".$key_minor."'>".$title."</a></span>".$warning."</h3>";
+				$results_array[$title] =  sprintf("<h3> <span class='nicelink label label-default'><a id='%s' href='editor.php?record=%s'>%s</a></span> %s %s</h3><h4>%s</h4>",$title,$key_minor,$title, $stage, $warning,$comment);
 		  }
 	  }
 	sort($results_array, SORT_STRING);

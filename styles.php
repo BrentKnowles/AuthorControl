@@ -221,9 +221,17 @@ text-decoration:underline;
 .select:visited{
 text-decoration:underline;
 }
+  .progresslabel {
+    position: relative;
+    left: 8px;
+	top: -18px;
+	white-space: nowrap;
+    font-size: small;
+	color:white;
+}
 progress {
-	width: 50%;
-	height: 6px;
+	width: 90%;
+	height: 20px;
 	/* Important Thing */
 	-webkit-appearance: none;
 	border: none;

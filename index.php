@@ -255,19 +255,21 @@ Categories - Special
 					if ($novel->showprogress==util::$TRUE)
 					{
 						
-						echo sprintf('<progress max="100" value=%s></progress> (%s)<br/>', $novel->progress, $LANGUAGE[$novel->stage.util::$STRING]);
+						//<br/>
+						echo sprintf('<progress max="100" value=%s></progress><span class="progresslabel"> ', $novel->progress);
 						
 						if ($result[util::$KEY_FOR_WORKSCREATED][util::$INDEX_SETTINGS_RECORD][$novel->stage."_behavior"] === util::$BEHAVIOR_DONE)
 						//if ($novel->stage === util::$DONE)
 						{
 							// we display a hyperlink instead.
-							echo sprintf('%s  [<a href="%s"  class="nicelink">%s</a>]</br>',$novel->title, $novel->publishedat[$novel->progress_link], $LANGUAGE[util::$NOW_AVAILABLE]);
+							echo sprintf('%s  <br/> [<a href="%s"  class="nicelink">%s</a>]',$novel->title, $novel->publishedat[$novel->progress_link], $LANGUAGE[util::$NOW_AVAILABLE]);
 							
 						}
 						else
 						{
-							echo $novel->title."</br>";
+							echo sprintf('%s',$novel->title);
 						}
+						echo sprintf(" %s<br/></span>", $LANGUAGE[$novel->stage.util::$STRING]);
 					}
 				}
 			?>

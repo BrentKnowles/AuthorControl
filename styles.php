@@ -265,4 +265,23 @@ color:red;
 .error{
 color:red;
 }
+.faq {
+	
+}
+
+.faq ul {
+	
+}
+
+.faq ul li {
+	display:block;
+}
+
+.faq ul li div {
+	display:none;
+}
+
+.faq ul li div:target {
+	display:block;
+}
 </style>

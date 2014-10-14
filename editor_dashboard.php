@@ -1,4 +1,5 @@
 <html>
+
 <?php
 require 'authorinclude.php';
 
@@ -31,6 +32,21 @@ else
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+<?php
+ $result = json_decode(file_get_contents("options.json"), true);
+ $STYLE_SHEET = $result[util::$KEY_FOR_WORKSCREATED][util::$INDEX_SETTINGS_RECORD][util::$KEY_STYLE_SHEET];
+if (!$STYLE_SHEET)
+{
+	exit ("ERROR: A style sheet needs to be defined in the provided schema for this page and it must exist in the directory. From the editor dashboard edit the look and feel and fill in the field index_style_sheet with the name of an appropriate file.");
+	
+}
+if (!file_exists($STYLE_SHEET))
+{
+	exit ("ERROR: The style sheet [".$STYLE_SHEET."] does not exist. It needs to .");
+}
+require $STYLE_SHEET;
+?>
 <style>
 .nicelink a:link{
 color:white;
@@ -45,6 +61,10 @@ body {
 
 .navbar {
   margin-bottom: 20px;
+}
+body{
+background-color: white;
+font-size: 2em;
 }
 </style>
 	</head>
@@ -104,8 +124,25 @@ body {
        </div>
 
 	  <?php
+// Original PHP code by Chirp Internet: www.chirp.com.au
+// Please acknowledge use of this code by including this header.
+
+function myTruncate($string, $limit, $break=".", $pad="...")
+{
+  // return with no change if string is shorter than $limit
+  if(strlen($string) <= $limit) return $string;
+
+  // is $break present between $limit and the end of the string?
+  if(false !== ($breakpoint = strpos($string, $break, $limit))) {
+    if($breakpoint < strlen($string) - 1) {
+      $string = substr($string, 0, $breakpoint) . $pad;
+    }
+  }
+
+  return $string;
+}
 	  
-	  $result = json_decode(file_get_contents("options.json"), true);
+	 
 	  
 	
 	/* 	  echo "<br/><br/><a href='add_new_work.php'>Add New Work</a>";
@@ -144,9 +181,24 @@ body {
 			  $stage_label=$result[$works_label][$key_minor][util::$KEY_STAGE];
 			  $stage_appearance_html_class=  $result[util::$KEY_FOR_WORKSCREATED][util::$INDEX_SETTINGS_RECORD][$stage_label];//'label label-primary';
 			  $stage=sprintf("<span class='%s'>%s</span>",$stage_appearance_html_class, $stage_label );
-			  $comment=sprintf('<span class="label label-info">%s</span>',$result[$works_label][$key_minor][util::$KEY_COMMENT] );
+			  
+			  $work_id = $result[$works_label][$key_minor][util::$WORKID];
+			  $comment_str = $result[$works_label][$key_minor][util::$KEY_COMMENT];
+			  $comment_str_short = myTruncate($comment_str, 10);
+			  $comment=sprintf('<span class="label label-info">%s</span>',$comment_str_short );
+			 $collapsiblecomment = sprintf('<div class="faq">
+			   <ul>
+			   <li><a href="#%s">%s</a>   
+			   <div id="%s">%s </div>
+			   </li>  </ul>  
+</div>',$key_minor,$comment,$key_minor,$comment_str);
+   
+   
+  
+ 
+			  
 			  // I put the ID = Title in here so that it would sort alphabetically.
-				$results_array[$title] =  sprintf("<h3> <span class='nicelink label label-default'><a id='%s' href='editor.php?record=%s'>%s</a></span> %s %s</h3><h4>%s</h4>",$title,$key_minor,$title, $stage, $warning,$comment);
+				$results_array[$title] =  sprintf("<h3> <span class='nicelink label label-default'><a id='%s' href='editor.php?record=%s'>%s</a></span> %s %s</h3> %s",$title,$key_minor,$title, $stage, $warning, $collapsiblecomment);
 		  }
 	  }
 	sort($results_array, SORT_STRING);

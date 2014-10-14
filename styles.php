@@ -13,7 +13,6 @@ $bookbox_title_color=$gold;
 $link_mouseover_color=$gold;
 ?>
 <style>
-
 .closebutton2{
  background-color: rgba(255, 255, 255, 1);
  top: 5px; // don't want button above

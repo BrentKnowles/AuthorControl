@@ -23,9 +23,13 @@ class Novel
 	public $stage;
 	public $progress_link;
 	public $workid;
-	public static function AddNovelFromArray($arr)
+	public $excerpt;
+	public $position;
+	
+	public static function AddNovelFromArray($arr,$index)
 {
 	$myNovel = new Novel();
+	$myNovel->position=$index;
 	$myNovel->title = $arr[util::$KEY_TITLE];
 	
 	$myNovel->showprogress = $arr[util::$KEY_SHOW_PROGRESS];
@@ -45,6 +49,8 @@ class Novel
 	$myNovel->web_link=$arr["web_link"];
 	$myNovel->showwork=$arr["showwork"];
 	$myNovel->isbn=$arr["isbn"];
+	$myNovel->excerpt=$arr["excerpt"];
+	
 	$myNovel->workid=$arr[util::$WORKID];
 	$myNovel->publishedat=$arr;/// ["publishedat"]; Made a big change and now we need to do hacky/comlicated stuff for Editor support
 	return $myNovel;

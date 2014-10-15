@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="./css/inlinepopup.css"> 
 <link rel="stylesheet" href="./css/font-awesome.css">
 <link href="carousel.css" rel="stylesheet">
+
 <?php
 require 'authorinclude.php';
 
@@ -456,20 +457,20 @@ foreach ($novels as $val)
 		echo "<i class='bookimage fa fa-spinner fa-spin fa-5x'></i>";
 		}
 		echo '<div itemprop="description">';
-		
+		echo $val->blurb;
 		if ($val->excerpt && $val->excerpt !== "excerpt")
 		{
 			$collapsiblecomment = sprintf('<div class="faq">
 			   <ul>
 			   <li>
-			   <a href="#%s">%s</a>   
+			   <a href="#%s" class="excerpt_lower_trick">%s</a>   
 			   <div id="%s" class="orangebox"><br/><b>%s</b><br/>%s </div>
 			   </li>  </ul>  
-</div>',$val->position,"Excerpt",$val->position,$titleToUse,$val->excerpt);
+</div>',$val->position,"Read Excerpt",$val->position,$titleToUse,$val->excerpt);
 echo $collapsiblecomment;
 		}
 		
-		echo $val->blurb;
+		
 		
 		
 		echo '</div>';

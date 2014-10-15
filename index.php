@@ -7,7 +7,12 @@
 <link rel="stylesheet" href="./css/inlinepopup.css"> 
 <link rel="stylesheet" href="./css/font-awesome.css">
 <link href="carousel.css" rel="stylesheet">
-
+<style>
+input + label + div { display: none; }
+input:checked + label + div { display: block; }
+input + label:after { content: " Show Excerpt"; }
+input:checked + label:after { content: " Hide Excerpt"; }
+</style>
 <?php
 require 'authorinclude.php';
 
@@ -460,13 +465,22 @@ foreach ($novels as $val)
 		echo $val->blurb;
 		if ($val->excerpt && $val->excerpt !== "excerpt")
 		{
-			$collapsiblecomment = sprintf('<div class="faq">
+		
+		
+		$collapsiblecomment = sprintf("<br/><input type='checkbox' style='display: none' id=l%s>
+<label for=l%s></label>
+<div class='orangebox'>
+    %s
+</div>",$val->position,$val->position,$val->excerpt);
+		
+		
+		/* 	$collapsiblecomment = sprintf('<div class="faq">
 			   <ul>
 			   <li>
 			   <a href="#%s" class="excerpt_lower_trick">%s</a>   
 			   <div id="%s" class="orangebox"><br/><b>%s</b><br/>%s </div>
 			   </li>  </ul>  
-</div>',$val->position,"Read Excerpt",$val->position,$titleToUse,$val->excerpt);
+</div>',$val->position,"Read Excerpt",$val->position,$titleToUse,$val->excerpt); */
 echo $collapsiblecomment;
 		}
 		

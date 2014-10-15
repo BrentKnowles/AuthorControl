@@ -11,6 +11,19 @@ $chalkboardgreen="#29472B";//"#3B653D";
 $gold="#FFFFA3";// the yellow-gold
 $bookbox_title_color=$gold; 
 $link_mouseover_color=$gold;
+<?php
+// * COLORS
+$background_color="#000000";
+$border1_color="#94704D";
+$innerbackground_color= "#333333";
+$bookboxtext_color="#F0EDEB";
+$boookboxborder_color="#A49586";
+$brown="#5E4631";
+$bookbox_title_background_color=$brown; 
+$chalkboardgreen="#29472B";//"#3B653D";
+$gold="#FFFFA3";// the yellow-gold
+$bookbox_title_color=$gold; 
+$link_mouseover_color=$gold;
 ?>
 <style>
 .closebutton2{
@@ -282,5 +295,12 @@ color:red;
 
 .faq ul li div:target {
 	display:block;
+	background-color:black;
+}
+.orangebox{
+    border: 2px solid;
+    border-radius: 25px;
+	padding: 10px;
+	border-color: orange;
 }
 </style>

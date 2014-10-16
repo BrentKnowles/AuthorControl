@@ -467,20 +467,27 @@ foreach ($novels as $val)
 		{
 		
 		
-		$collapsiblecomment = sprintf("<br/><input type='checkbox' style='display: none' id=l%s>
-<label for=l%s></label>
-<div class='orangebox'>
-    %s
-</div>",$val->position,$val->position,$val->excerpt);
 		
 		
-		/* 	$collapsiblecomment = sprintf('<div class="faq">
+		if(util::GetIsBrowserIOS() > 0){   
+				$collapsiblecomment = sprintf('<div class="faq">
 			   <ul>
 			   <li>
 			   <a href="#%s" class="excerpt_lower_trick">%s</a>   
 			   <div id="%s" class="orangebox"><br/><b>%s</b><br/>%s </div>
 			   </li>  </ul>  
-</div>',$val->position,"Read Excerpt",$val->position,$titleToUse,$val->excerpt); */
+</div>',$val->position,"Read Excerpt",$val->position,$titleToUse,$val->excerpt); 
+		}
+		else
+		{
+		$collapsiblecomment = sprintf("<br/><input type='checkbox' style='display: none' id=l%s>
+<label for=l%s></label>
+<div class='orangebox'>
+    %s
+</div>",$val->position,$val->position,$val->excerpt);
+		}
+		
+
 echo $collapsiblecomment;
 		}
 		
@@ -718,10 +725,8 @@ $showreviews="hidden";
 //
 // On FireFox we never show reviews (we can't make them appear properly)
 //
-if(isset($_SERVER['HTTP_USER_AGENT'])){
-    $agent = $_SERVER['HTTP_USER_AGENT'];
-}
-if(strlen(strstr($agent,"Firefox")) > 0 ){      
+
+if(util::GetIsBrowserFireFox() > 0){      
     // won't enable reviews
 }
 else

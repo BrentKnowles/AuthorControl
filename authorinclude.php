@@ -5,6 +5,9 @@ require_once "novel.php";
 class util
 {
 	/*
+	0.0.0.7.0 - randomized progress bars (status)
+	0.0.0.6.3 - Excerpt systems
+	0.0.0.6.1 - allow footer text to overridden
 	0.0.0.6.0 - Allow "behavior" control of State/Status fields (i.e., deciding which states behave as a 'done' state)
 	0.0.0.5.8 - Able to edit the schema to add fields (providing admin flexibility)
 	0.0.0.5.7 - adding status information to dashboard
@@ -17,7 +20,7 @@ class util
 		0.0.0.2 - the "translation" version of the editor was displaying translated versions of the strings. Needed to suppress.
 		0.0.0.1 - adoption of the version number system
 	*/
-	private static $VERSION= '0.0.0.6.1';
+	private static $VERSION= '0.0.0.6.3';
 
 	//
 	// CONTROL PANEL
@@ -78,6 +81,7 @@ class util
 		public static $BACKUP_EMAIL_ADDRESS="backup_email_address";
 		public static $SHOW_REVIEWS = "show_reviews";
 		public static $TYPESOFFIELDS = "typesoffields";
+		public static $FOOTER="footer";
 			//
 			// SPECIAL INDEXES INTO WORK CREATED
 			//
@@ -156,6 +160,41 @@ class util
 	 }
 	 return $pageURL;
 	}
+	
+	//
+	//
+	//
+	public static function GetIsBrowserFireFox()
+	{
+		if(isset($_SERVER['HTTP_USER_AGENT'])){
+		$agent = $_SERVER['HTTP_USER_AGENT'];
+				if (strlen(strstr($agent,"Firefox")) > 0)
+				{
+					return 1;
+				}
+		}
+		return 0;
+
+	}
+	//
+	//
+	//
+	public static function GetIsBrowserIOS()
+	{
+		if(isset($_SERVER['HTTP_USER_AGENT'])){
+		$agent = $_SERVER['HTTP_USER_AGENT'];
+		
+		$iPod    = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
+		$iPhone  = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
+		$iPad    = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
+		if( $iPod || $iPhone || $iPad){
+		return 1;
+		}
+		}
+		return 0;
+
+	}
+	
 	//
 	// Get the IP address that we use to test user authentication against
 	//

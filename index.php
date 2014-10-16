@@ -7,12 +7,7 @@
 <link rel="stylesheet" href="./css/inlinepopup.css"> 
 <link rel="stylesheet" href="./css/font-awesome.css">
 <link href="carousel.css" rel="stylesheet">
-<style>
-input + label + div { display: none; }
-input:checked + label + div { display: block; }
-input + label:after { content: " Show Excerpt"; }
-input:checked + label:after { content: " Hide Excerpt"; }
-</style>
+
 <?php
 require 'authorinclude.php';
 

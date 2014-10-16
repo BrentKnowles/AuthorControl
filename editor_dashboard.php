@@ -48,6 +48,15 @@ if (!file_exists($STYLE_SHEET))
 require $STYLE_SHEET;
 ?>
 <style>
+/*Override the excerpt stuff*/
+input[type=checkbox] + label{
+font-size:0.6em;
+color:white;
+background-color:orange;
+padding:5px;
+}
+input[type=checkbox] + label:after { content: " +"; }
+input[type=checkbox]:checked + label:after { content: " -"; }
 .nicelink a:link{
 color:white;
 }
@@ -186,19 +195,22 @@ function myTruncate($string, $limit, $break=".", $pad="...")
 			  $comment_str = $result[$works_label][$key_minor][util::$KEY_COMMENT];
 			  $comment_str_short = myTruncate($comment_str, 10);
 			  $comment=sprintf('<span class="label label-info">%s</span>',$comment_str_short );
-			 $collapsiblecomment = sprintf('<div class="faq">
+	/* 		 $collapsiblecomment = sprintf('<div class="faq">
 			   <ul>
 			   <li><a href="#%s">%s</a>   
 			   <div id="%s">%s </div>
 			   </li>  </ul>  
-</div>',$key_minor,$comment,$key_minor,$comment_str);
-   
-   
+</div>',$key_minor,$comment,$key_minor,$comment_str); */
+$collapsiblecomment = "";
+   if ($comment_str && $comment_str != "" && $comment_str != "comment")
+   {
+   $collapsiblecomment = sprintf("<input type='checkbox' style='display: none' id=l%s>
+<label for=l%s></label><div class='orangebox' style='color: white; font-size:0.7em;'>%s</div>",$key_minor,$key_minor,$comment_str);
   
- 
+ }
 			  
 			  // I put the ID = Title in here so that it would sort alphabetically.
-				$results_array[$title] =  sprintf("<h3> <span class='nicelink label label-default'><a id='%s' href='editor.php?record=%s'>%s</a></span> %s %s</h3> %s",$title,$key_minor,$title, $stage, $warning, $collapsiblecomment);
+				$results_array[$title] =  sprintf("<h3> <span class='nicelink label label-default'><a id='%s' href='editor.php?record=%s'>%s</a></span> %s %s %s</h3> ",$title,$key_minor,$title, $stage, $warning, $collapsiblecomment);
 		  }
 	  }
 	sort($results_array, SORT_STRING);

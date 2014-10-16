@@ -20,7 +20,7 @@ class util
 		0.0.0.2 - the "translation" version of the editor was displaying translated versions of the strings. Needed to suppress.
 		0.0.0.1 - adoption of the version number system
 	*/
-	private static $VERSION= '0.0.0.6.3';
+	private static $VERSION= '0.0.0.7.0';
 
 	//
 	// CONTROL PANEL
@@ -82,6 +82,7 @@ class util
 		public static $SHOW_REVIEWS = "show_reviews";
 		public static $TYPESOFFIELDS = "typesoffields";
 		public static $FOOTER="footer";
+		public static $MAX_PROGRESSBARS="max_progressbars";
 			//
 			// SPECIAL INDEXES INTO WORK CREATED
 			//

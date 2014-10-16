@@ -110,6 +110,7 @@ $FOOTER_BELOW="";
 $DEFAULT_CATEGORY="";
 $SCHEMEORG_SCHEMA="";
 $SHOW_REVIEWS=util::$FALSE;
+$max_progressbars_to_show = 3;
 	//
 	// All setting information is stored in a record = -1
 	// The first record in the list
@@ -137,6 +138,7 @@ $SHOW_REVIEWS=util::$FALSE;
 			$DEFAULT_CATEGORY=$key[util::$DEFAULT_CATEGORY];
 			$SCHEMEORG_SCHEMA=$key[util::$SCHEMEORG_SCHEMA];
 			$SHOW_REVIEWS=$key[util::$SHOW_REVIEWS];
+			$max_progressbars_to_show=$key[util::$MAX_PROGRESSBARS];
 			
 		break;
 		}
@@ -250,6 +252,9 @@ Categories - Special
 			<div class="specialoffer">
 			<p class="neon"><?php echo $LANGUAGE[util::$PROGRESS_TITLE];?></p>
 			<?php
+			
+				
+				$listofprogressbars = array();
 				// iterate through all records looking for SHOWPROGRESS = true
 				// if true then LIST the name
 				foreach ($novels as $novel)
@@ -258,20 +263,33 @@ Categories - Special
 					{
 						
 						//<br/>
-						echo sprintf('<progress max="100" value=%s></progress><span class="progresslabel"> ', $novel->progress);
+						$progressbar = sprintf('<progress max="100" value=%s></progress><span class="progresslabel"> ', $novel->progress);
 						
 						if ($result[util::$KEY_FOR_WORKSCREATED][util::$INDEX_SETTINGS_RECORD][$novel->stage."_behavior"] === util::$BEHAVIOR_DONE)
 						//if ($novel->stage === util::$DONE)
 						{
 							// we display a hyperlink instead.
-							echo sprintf('%s  <br/> [<a href="%s"  class="nicelink">%s</a>]',$novel->title, $novel->publishedat[$novel->progress_link], $LANGUAGE[util::$NOW_AVAILABLE]);
+							$progressbar.=sprintf('%s  <br/> [<a href="%s"  class="nicelink">%s</a>]',$novel->title, $novel->publishedat[$novel->progress_link], $LANGUAGE[util::$NOW_AVAILABLE]);
 							
 						}
 						else
 						{
-							echo sprintf('%s',$novel->title);
+							$progressbar .= sprintf('%s',$novel->title);
 						}
-						echo sprintf(" %s<br/></span>", $LANGUAGE[$novel->stage.util::$STRING]);
+						$progressbar .= sprintf(" %s<br/></span>", $LANGUAGE[$novel->stage.util::$STRING]);
+						array_push($listofprogressbars, $progressbar);
+						
+					}
+				}
+				shuffle($listofprogressbars);
+				$countprogressbars=0;
+				foreach ($listofprogressbars as $progress)
+				{
+					$countprogressbars++;
+					echo ($progress);
+					if ($countprogressbars >= $max_progressbars_to_show)
+					{
+						break;
 					}
 				}
 			?>
